@@ -1,0 +1,93 @@
+创建一个收藏表单，要求功能：
+
+
+1、增加收藏
+
+2、取消收藏
+
+3、收藏物品的名称
+
+4、用户唯一id
+
+Microsoft Windows [版本 10.0.17134.345]
+(c) 2018 Microsoft Corporation。保留所有权利。
+
+C:\WINDOWS\system32>mysql -u root -p
+Enter password: ******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 90
+Server version: 8.0.12 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database gouwuche charset = utf8;
+Query OK, 1 row affected, 1 warning (0.00 sec)
+
+mysql> use gouwuche;
+Database changed
+
+mysql> create table cvbcollection(id varchar(10) primary key unique,cvbname varchar(20),price int(10),type varchar(20),cancelcollection  bit default 1);
+Query OK, 0 rows affected (1.28 sec)
+
+mysql> desc cvbcollection;
++------------------+-------------+------+-----+---------+-------+
+| Field            | Type        | Null | Key | Default | Extra |
++------------------+-------------+------+-----+---------+-------+
+| id               | varchar(10) | NO   | PRI | NULL    |       |
+| cvbname     | varchar(20) | YES  |     | NULL    |       |
+| price            | int(10)     | YES  |     | NULL    |       |
+| type             | varchar(20) | YES  |     | NULL    |       |
+| cancelcollection | bit(1)      | YES  |     | b'1'    |       |
++------------------+-------------+------+-----+---------+-------+
+5 rows in set (0.15 sec)
+
+mysql>  insert into cvbcollection(id,cvbname,price,type) values(
+    ->  "gao","crisps",10,"snacks"),("cao","bread",100,"food");
+Query OK, 2 rows affected (0.29 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from cvbcollection;
++--------+--------------+-------+--------+------------------+
+| id     | cvbname | price | type   | cancelcollection |
++--------+--------------+-------+--------+------------------+
+| gao | crisps        |    10 | snacks |                  |
+| cao  | bread      |   100 | food   |                  |
++--------+--------------+-------+--------+------------------+
+2 rows in set (0.00 sec)
+
+（1）增加收藏：
+mysql> insert into cvbcollection(id,cvbname,price,type) values(
+    -> "bo","greens",5,"vegetables");
+Query OK, 1 row affected (0.18 sec)
+
+mysql> select * from cvbcollection;
++----------+--------------+-------+------------+------------------+
+| id       | cvbname | price | type       | cancelcollection |
++----------+--------------+-------+------------+------------------+
+| gao   | crisps        |    10 | snacks     |                  |
+| cao    | bread      |   100 | food       |                  |
+| bo | greens       |     5 | vegetables |                  |
++----------+--------------+-------+------------+------------------+
+3 rows in set (0.00 sec)
+
+（2）取消收藏：
+
+mysql> update cvbcollection set cancelcollection=0 where cvbname='crisps';
+Query OK, 1 row affected (0.25 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from cvbcollection;
++----------+--------------+-------+------------+------------------+
+| id       | cvbname | price | type       | cancelcollection |
++----------+--------------+-------+------------+------------------+
+| gao   | crisps        |    10 | snacks     |                  |
+| cao    | bread      |   100 | food       |                  |
+| bo | greens       |     5 | vegetables |                  |
++----------+--------------+-------+------------+------------------+
+3 rows in set (0.00 sec)
